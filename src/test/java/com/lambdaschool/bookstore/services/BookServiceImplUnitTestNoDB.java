@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -115,16 +116,25 @@ public class BookServiceImplUnitTestNoDB
     @Test
     public void findAll()
     {
+        Mockito.when(bookrepos.findAll())
+                .thenReturn(myBookList);
+        assertEquals(5,
+                bookService.findAll().size());
     }
 
     @Test
     public void findBookById()
     {
+        Mockito.when(bookrepos.findById(3L))
+                .thenReturn(Optional.of(myBookList.get(2)));
+        assertEquals("The Da Vinci Code",
+                bookService.findBookById(3L).getTitle());
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void notFindBookById()
     {
+
     }
 
     @Test
