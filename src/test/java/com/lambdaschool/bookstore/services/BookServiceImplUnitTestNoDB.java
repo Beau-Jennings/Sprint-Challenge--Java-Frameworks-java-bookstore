@@ -134,12 +134,20 @@ public class BookServiceImplUnitTestNoDB
     @Test(expected = ResourceNotFoundException.class)
     public void notFindBookById()
     {
-
+        Mockito.when(bookrepos.findById(1337L))
+                .thenReturn(Optional.empty());
+        assertEquals("Java For Dummies",
+                bookService.findBookById(1337L).getTitle());
     }
 
     @Test
     public void delete()
     {
+        Mockito.when(bookrepos.findById(1L))
+                .thenReturn(Optional.of(myBookList.get(0)));
+        Mockito.doNothing().when(bookrepos).deleteById(1L);
+        bookService.delete(1L);
+        assertEquals(5, myBookList.size());
     }
 
     @Test
